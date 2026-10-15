@@ -1,6 +1,6 @@
 {
   "name": "pi-searchful",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Tiered web-search and URL-retrieval extension for Pi. Routes search via Jev to Exa/Brave/Tavily and retrieves URLs via Trafilatura/Jina/crawl4ai.",
   "type": "module",
   "main": "./dist/index.js",
@@ -29,7 +29,9 @@
     "url": "https://github.com/skylerahuman/pi-searchful/issues"
   },
   "pi": {
-    "extensions": ["./dist/index.js"]
+    "extensions": [
+      "./dist/index.js"
+    ]
   },
   "scripts": {
     "typecheck": "tsc --noEmit",
@@ -46,10 +48,18 @@
     "typebox": "*"
   },
   "peerDependenciesMeta": {
-    "@earendil-works/pi-coding-agent": { "optional": true },
-    "@earendil-works/pi-ai": { "optional": true },
-    "@earendil-works/pi-tui": { "optional": true },
-    "typebox": { "optional": true }
+    "@earendil-works/pi-coding-agent": {
+      "optional": true
+    },
+    "@earendil-works/pi-ai": {
+      "optional": true
+    },
+    "@earendil-works/pi-tui": {
+      "optional": true
+    },
+    "typebox": {
+      "optional": true
+    }
   },
   "devDependencies": {
     "@earendil-works/pi-coding-agent": "1.2.0",
