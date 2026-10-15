@@ -1,0 +1,40 @@
+{
+  "name": "pi-searchful",
+  "version": "0.2.0",
+  "private": true,
+  "type": "module",
+  "main": "./index.ts",
+  "exports": {
+    ".": "./index.ts"
+  },
+  "description": "Tiered web-search and URL-retrieval extension for Pi. Routes search via Jev to Exa/Brave/Tavily and retrieves URLs via Trafilatura/Jina/crawl4ai.",
+  "scripts": {
+    "check": "tsc --noEmit",
+    "build": "tsc -p tsconfig.build.json"
+  },
+  "peerDependencies": {
+    "@earendil-works/pi-coding-agent": "^1.2.0",
+    "@earendil-works/pi-ai": "^1.2.0",
+    "@earendil-works/pi-tui": "^1.2.0",
+    "typebox": "^1.0.0"
+  },
+  "peerDependenciesMeta": {
+    "@earendil-works/pi-coding-agent": { "optional": false },
+    "@earendil-works/pi-ai": { "optional": true },
+    "@earendil-works/pi-tui": { "optional": true },
+    "typebox": { "optional": true }
+  },
+  "devDependencies": {
+    "@types/node": "^22.9.0",
+    "typescript": "^5.6.3"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "files": [
+    "*.ts",
+    "providers",
+    ".env.example",
+    "README.md"
+  ]
+}
