@@ -1,6 +1,6 @@
 {
   "name": "pi-searchful",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "Tiered web-search and URL-retrieval extension for Pi. Routes search via Jev to Exa/Brave/Tavily and retrieves URLs via Trafilatura/Jina/crawl4ai.",
   "type": "module",
   "main": "./dist/index.js",

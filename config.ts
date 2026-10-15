@@ -11,6 +11,7 @@
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { readFileSync, existsSync } from "node:fs";
+import { homedir } from "node:os";
 
 const here = dirname(fileURLToPath(import.meta.url));
 
@@ -67,11 +68,27 @@ function read(name: string): string | undefined {
 	return t.length === 0 ? undefined : t;
 }
 
+/**
+ * Fallback for keys stored by /searchful-login in ~/.pi/agent/auth.json.
+ * Env vars win; auth.json fills any gaps. Invalid/missing file is fine.
+ */
+function readAuthKey(providerId: string): string | undefined {
+	try {
+		const p = join(homedir(), ".pi", "agent", "auth.json");
+		if (!existsSync(p)) return undefined;
+		const entry = JSON.parse(readFileSync(p, "utf8"))?.[providerId];
+		const key = typeof entry === "object" && entry !== null ? entry.key : undefined;
+		return typeof key === "string" && key.length > 0 ? key : undefined;
+	} catch {
+		return undefined;
+	}
+}
+
 export const config = {
-	exa: read("EXA_API_KEY"),
-	brave: read("BRAVE_API_KEY"),
-	tavily: read("TAVILY_API_KEY"),
-	jina: read("JINA_API_KEY"),
+	exa: read("EXA_API_KEY") ?? readAuthKey("exa"),
+	brave: read("BRAVE_API_KEY") ?? readAuthKey("brave"),
+	tavily: read("TAVILY_API_KEY") ?? readAuthKey("tavily"),
+	jina: read("JINA_API_KEY") ?? readAuthKey("jina"),
 	crawl4aiBaseUrl: read("CRAWL4AI_BASE_URL") ?? "http://localhost:11235",
 	crawl4aiApiKey: read("CRAWL4AI_API_KEY"),
 	defaultVerbosity: (read("SEARCH_DEFAULT_VERBOSITY") as "concise" | "normal" | "detailed" | undefined) ?? "normal",
