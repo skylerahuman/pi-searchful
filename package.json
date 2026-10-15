@@ -1,40 +1,75 @@
 {
   "name": "pi-searchful",
   "version": "0.2.0",
-  "private": true,
-  "type": "module",
-  "main": "./index.ts",
-  "exports": {
-    ".": "./index.ts"
-  },
   "description": "Tiered web-search and URL-retrieval extension for Pi. Routes search via Jev to Exa/Brave/Tavily and retrieves URLs via Trafilatura/Jina/crawl4ai.",
+  "type": "module",
+  "main": "./dist/index.js",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "keywords": [
+    "pi-package",
+    "pi-extension",
+    "pi",
+    "search",
+    "retrieval",
+    "web-search",
+    "ai-tools"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/skylerahuman/pi-searchful",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/skylerahuman/pi-searchful.git"
+  },
+  "bugs": {
+    "url": "https://github.com/skylerahuman/pi-searchful/issues"
+  },
+  "pi": {
+    "extensions": ["./dist/index.js"]
+  },
   "scripts": {
-    "check": "tsc --noEmit",
-    "build": "tsc -p tsconfig.build.json"
+    "typecheck": "tsc --noEmit",
+    "test": "tsx --test tests/*.test.ts tests/helpers/**/*.test.ts",
+    "check": "npm run typecheck && npm test",
+    "build": "tsc -p tsconfig.build.json",
+    "prepack": "npm run build",
+    "prepublishOnly": "npm run check"
   },
   "peerDependencies": {
-    "@earendil-works/pi-coding-agent": "^1.2.0",
-    "@earendil-works/pi-ai": "^1.2.0",
-    "@earendil-works/pi-tui": "^1.2.0",
-    "typebox": "^1.0.0"
+    "@earendil-works/pi-coding-agent": ">=1.2.0",
+    "@earendil-works/pi-ai": ">=1.2.0",
+    "@earendil-works/pi-tui": ">=1.2.0",
+    "typebox": "*"
   },
   "peerDependenciesMeta": {
-    "@earendil-works/pi-coding-agent": { "optional": false },
+    "@earendil-works/pi-coding-agent": { "optional": true },
     "@earendil-works/pi-ai": { "optional": true },
     "@earendil-works/pi-tui": { "optional": true },
     "typebox": { "optional": true }
   },
   "devDependencies": {
+    "@earendil-works/pi-coding-agent": "1.2.0",
+    "@earendil-works/pi-ai": "1.2.0",
+    "@earendil-works/pi-tui": "1.2.0",
     "@types/node": "^22.9.0",
+    "tsx": "^4.19.0",
+    "typebox": "^1.0.0",
     "typescript": "^5.6.3"
   },
   "engines": {
-    "node": ">=20"
+    "node": ">=22"
+  },
+  "publishConfig": {
+    "access": "public"
   },
   "files": [
-    "*.ts",
-    "providers",
-    ".env.example",
-    "README.md"
+    "dist",
+    "README.md",
+    "LICENSE",
+    ".env.example"
   ]
 }

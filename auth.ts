@@ -33,9 +33,10 @@ export function authJsonPath(): string {
 	return join(homedir(), ".pi", "agent", "auth.json");
 }
 
-/** Read auth.json. Returns {} when missing. */
-export function readAuthFile(): AuthFile {
-	const p = authJsonPath();
+/** Read auth.json. Returns {} when missing.
+ *  Optional `path` argument lets tests point at a temp file. */
+export function readAuthFile(path?: string): AuthFile {
+	const p = path ?? authJsonPath();
 	if (!existsSync(p)) return {};
 	try {
 		const text = readFileSync(p, "utf8");
@@ -49,11 +50,12 @@ export function readAuthFile(): AuthFile {
 	}
 }
 
-/** Merge new entries into auth.json. Preserves all existing entries. */
-export function writeAuthFile(entries: Record<string, AuthEntry>): AuthFile {
-	const current = readAuthFile();
+/** Merge new entries into auth.json. Preserves all existing entries.
+ *  Optional `path` argument lets tests point at a temp file. */
+export function writeAuthFile(entries: Record<string, AuthEntry>, path?: string): AuthFile {
+	const p = path ?? authJsonPath();
+	const current = readAuthFile(p);
 	const merged = { ...current, ...entries };
-	const p = authJsonPath();
 	writeFileSync(p, JSON.stringify(merged, null, "\t") + "\n", "utf8");
 	return merged;
 }

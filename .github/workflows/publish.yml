@@ -1,0 +1,61 @@
+name: publish
+
+# Triggered when you push a tag like `v0.2.0`. Builds, tests, and publishes
+# to npm with provenance via OIDC trusted publishing.
+#
+# Setup (one-time, on npmjs.com):
+#   1. Create the npm package `pi-searchful` (or claim it after first publish).
+#   2. Under "Publishing access" -> "Trusted publishers", add a GitHub Actions
+#      publisher with:
+#         owner: skylerahuman
+#         repository: pi-searchful
+#         workflow filename: publish.yml
+#         environment: (leave blank)
+#   3. In Pi's repo Settings -> Environments, you may add `npm-publish` later
+#      for branch protection; not required for first publish.
+#
+# Usage:
+#   git tag v0.2.0
+#   git push origin v0.2.0
+#
+# Or trigger manually via the Actions tab (workflow_dispatch) after editing
+# the desired version in package.json.
+
+on:
+  push:
+    tags:
+      - "v*"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  id-token: write   # required for npm OIDC trusted publishing
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Install
+        run: npm ci
+
+      - name: Typecheck
+        run: npm run typecheck
+
+      - name: Test
+        run: npm test
+
+      - name: Build
+        run: npm run build
+
+      - name: Publish to npm (with provenance)
+        run: npm publish --provenance --access public
+        env:
+          NODE_AUTH_PROVIDER: github
