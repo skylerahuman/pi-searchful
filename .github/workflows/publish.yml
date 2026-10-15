@@ -60,5 +60,8 @@ jobs:
       - name: Build
         run: npm run build
 
-      - name: Publish to npm (with provenance)
-        run: npm publish --provenance --access public
+      # Account policy allows staged publishes only: the version lands in
+      # npm's staging area with signed provenance, and a maintainer approves
+      # it on npmjs.com (package page -> staged versions -> Approve).
+      - name: Stage publish to npm (with provenance)
+        run: npm stage publish --provenance --access public
